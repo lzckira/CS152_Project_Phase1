@@ -4,7 +4,6 @@ int line_num = 1, space_num = 1;
 
 LETTER  [a-zA-Z]
 DIGIT [0-9]
-IDENTIFIER LETTER(LETTER|DIGIT)*(_(LETTER|DIGIT)+)*
 
 %%
 
@@ -46,7 +45,7 @@ IDENTIFIER LETTER(LETTER|DIGIT)*(_(LETTER|DIGIT)+)*
 ">"  {printf("GT\n");}
 "<=" {printf("LTE\n");}
 ">=" {printf("GTE\n");}
-{IDENTIF} {printf("IDENT %s\n",yytext);}
+{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);}
 {DIGIT}+   {printf("NUMBER %s\n",yytext);}
 ";"  {printf("SEMICOLON\n");} 
 ":"  {printf("COLON\n");} 
@@ -56,6 +55,8 @@ IDENTIFIER LETTER(LETTER|DIGIT)*(_(LETTER|DIGIT)+)*
 "["  {printf("L_SQUARE_BRACKET\n");} 
 "]"  {printf("R_SQUARE_BRACKET\n");} 
 ":=" {printf("ASSIGN\n");}
+(##(.)*\n) {}
+
 
 [ \t]+ {/* space  */}
 
