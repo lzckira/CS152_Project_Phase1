@@ -2,9 +2,9 @@
 int line_num = 1, space_num = 1;
 %}
 
-LETTER  [a-z A-Z]
+LETTER  [a-zA-Z]
 DIGIT [0-9]
-IDENTIF LRTTER(LETTER|DIGIT)*
+IDENTIFIER LETTER(LETTER|DIGIT)*(_(LETTER|DIGIT)+)*
 
 %%
 
@@ -47,7 +47,7 @@ IDENTIF LRTTER(LETTER|DIGIT)*
 "<=" {printf("LTE\n");}
 ">=" {printf("GTE\n");}
 {IDENTIF} {printf("IDENT %s\n",yytext);}
-{DIGIT}   {printf("NUMBER %s\n",yytext);}
+{DIGIT}+   {printf("NUMBER %s\n",yytext);}
 ";"  {printf("SEMICOLON\n");} 
 ":"  {printf("COLON\n");} 
 ","  {printf("COMMA\n");} 
