@@ -47,8 +47,8 @@ DIGIT [0-9]
 ">=" {printf("GTE\n");col_num += yyleng;}
 {LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);col_num += yyleng;}
 
-{DIGIT}+{LETTER}+({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)*  	{printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter", line_num, col_num, yytext); col_num += yyleng;}
-{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)*_ 	{printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore", line_num, col_num, yytext); col_num += yyleng;}
+{DIGIT}+{LETTER}+({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)*(_)*  	{printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", line_num, col_num, yytext); exit(0);}
+{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)*(_)+ 	{printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", line_num, col_num, yytext); exit(0);}
 
 {DIGIT}+   {printf("NUMBER %s\n",yytext);col_num += yyleng;}
 ";"  {printf("SEMICOLON\n");col_num += yyleng;} 
@@ -67,7 +67,7 @@ DIGIT [0-9]
 "\n" {line_num++, col_num=1;}
 
 
-. {printf("Error at Line %d column %d :\"%s\"\n", line_num, col_num, yytext);exit(0);}
+. {printf("Error at Line %d column %d :\"%s\" is an unrecognized symbol\n", line_num, col_num, yytext);exit(0);}
 
 %%
 
