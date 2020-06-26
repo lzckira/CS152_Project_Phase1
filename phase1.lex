@@ -46,6 +46,11 @@ DIGIT [0-9]
 "<=" {printf("LTE\n");}
 ">=" {printf("GTE\n");}
 {LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);}
+
+{DIGIT}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);}
+({LETTER}|{DIGIT}|_)*_ 	{printf("IDENT %s\n", yytext);}
+
+
 {DIGIT}+   {printf("NUMBER %s\n",yytext);}
 ";"  {printf("SEMICOLON\n");} 
 ":"  {printf("COLON\n");} 
@@ -55,7 +60,7 @@ DIGIT [0-9]
 "["  {printf("L_SQUARE_BRACKET\n");} 
 "]"  {printf("R_SQUARE_BRACKET\n");} 
 ":=" {printf("ASSIGN\n");}
-(##(.)*\n) {}
+(##(.)*\n) {line_num++, space_num=1;}
 
 
 [ \t]+ {/* space  */}
@@ -63,7 +68,7 @@ DIGIT [0-9]
 "\n" {line_num++, space_num=1;}
 
 
-. {printf("Error at Line %d column %d :\"%s\"\n", line_num, space_num, yytext);}
+. {printf("Error at Line %d column %d :\"%s\"\n", line_num, space_num, yytext);exit(0);}
 
 %%
 
