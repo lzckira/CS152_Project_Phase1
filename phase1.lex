@@ -1,5 +1,5 @@
 %{
-int line_num = 1, space_num = 1;
+int line_num = 1, col_num = 1;
 %}
 
 LETTER  [a-zA-Z]
@@ -7,68 +7,68 @@ DIGIT [0-9]
 
 %%
 
-"function" {printf("FUNCTION\n");}
-"beginparams" {printf("BEGIN_PARAMS\n");}
-"endparams" {printf("END_PARAMS\n");}
-"beginlocals" {printf("BEGIN_LOCALS\n");}
-"endlocals" {printf("END_LOCALS\n");}
-"beginbody" {printf("BEGIN_BODY\n");}
-"endbody" {printf("END_BODY\n");}
-"integer" {printf("INTEGER\n");}
-"array" {printf("ARRAY\n");}
-"of" {printf("OF\n");}
-"if" {printf("IF\n");}
-"then" {printf("THEN\n");}
-"endif" {printf("ENDIF\n");}
-"else" {printf("ELSE\n");}
-"while" {printf("WHILE\n");}
-"do" {printf("DO\n");}
-"beginloop" {printf("BEGINLOOP\n");}
-"endloop" {printf("ENDLOOP\n");}
-"continue" {printf("CONTINUE\n");}
-"read" {printf("READ\n");}
-"write" {printf("WRITE\n");}
-"and" {printf("AND\n");}
-"or" {printf("OR\n");}
-"not" {printf("NOT\n");}
-"true" {printf("TRUE\n");}
-"false" {printf("FALSE\n");}
-"return" {printf("RETURN\n");}
-"-"  {printf("SUB\n");}
-"+"  {printf("ADD\n");}
-"*"  {printf("MULT\n");}
-"/"  {printf("DIV\n");}
-"%"  {printf("MOD\n");}
-"=="  {printf("EQ\n");}
-"<>" {printf("NEQ\n");}
-"<"  {printf("LT\n");}
-">"  {printf("GT\n");}
-"<=" {printf("LTE\n");}
-">=" {printf("GTE\n");}
-{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);}
+"function" {printf("FUNCTION\n");col_num += yyleng;}
+"beginparams" {printf("BEGIN_PARAMS\n");col_num += yyleng;}
+"endparams" {printf("END_PARAMS\n");col_num += yyleng;}
+"beginlocals" {printf("BEGIN_LOCALS\n");col_num += yyleng;}
+"endlocals" {printf("END_LOCALS\n");col_num += yyleng;}
+"beginbody" {printf("BEGIN_BODY\n");col_num += yyleng;}
+"endbody" {printf("END_BODY\n");col_num += yyleng;}
+"integer" {printf("INTEGER\n");col_num += yyleng;}
+"array" {printf("ARRAY\n");col_num += yyleng;}
+"of" {printf("OF\n");col_num += yyleng;}
+"if" {printf("IF\n");col_num += yyleng;}
+"then" {printf("THEN\n");col_num += yyleng;}
+"endif" {printf("ENDIF\n");col_num += yyleng;}
+"else" {printf("ELSE\n");col_num += yyleng;}
+"while" {printf("WHILE\n");col_num += yyleng;}
+"do" {printf("DO\n");col_num += yyleng;}
+"beginloop" {printf("BEGINLOOP\n");col_num += yyleng;}
+"endloop" {printf("ENDLOOP\n");col_num += yyleng;}
+"continue" {printf("CONTINUE\n");col_num += yyleng;}
+"read" {printf("READ\n");col_num += yyleng;}
+"write" {printf("WRITE\n");col_num += yyleng;}
+"and" {printf("AND\n");col_num += yyleng;}
+"or" {printf("OR\n");col_num += yyleng;}
+"not" {printf("NOT\n");col_num += yyleng;}
+"true" {printf("TRUE\n");col_num += yyleng;}
+"false" {printf("FALSE\n");col_num += yyleng;}
+"return" {printf("RETURN\n");col_num += yyleng;}
+"-"  {printf("SUB\n");col_num += yyleng;}
+"+"  {printf("ADD\n");col_num += yyleng;}
+"*"  {printf("MULT\n");col_num += yyleng;}
+"/"  {printf("DIV\n");col_num += yyleng;}
+"%"  {printf("MOD\n");col_num += yyleng;}
+"=="  {printf("EQ\n");col_num += yyleng;}
+"<>" {printf("NEQ\n");col_num += yyleng;}
+"<"  {printf("LT\n");col_num += yyleng;}
+">"  {printf("GT\n");col_num += yyleng;}
+"<=" {printf("LTE\n");col_num += yyleng;}
+">=" {printf("GTE\n");col_num += yyleng;}
+{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);col_num += yyleng;}
 
-{DIGIT}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);}
-({LETTER}|{DIGIT}|_)*_ 	{printf("IDENT %s\n", yytext);}
+{DIGIT}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);col_num += yyleng;}
+({LETTER}|{DIGIT}|_)*_ 	{printf("IDENT %s\n", yytext);col_num += yyleng;}
 
 
-{DIGIT}+   {printf("NUMBER %s\n",yytext);}
-";"  {printf("SEMICOLON\n");} 
-":"  {printf("COLON\n");} 
-","  {printf("COMMA\n");} 
-"("  {printf("L_PAREN\n");} 
-")"  {printf("R_PAREN\n");} 
-"["  {printf("L_SQUARE_BRACKET\n");} 
-"]"  {printf("R_SQUARE_BRACKET\n");} 
-":=" {printf("ASSIGN\n");}
-(##(.)*\n) {line_num++, space_num=1;}
+{DIGIT}+   {printf("NUMBER %s\n",yytext);col_num += yyleng;}
+";"  {printf("SEMICOLON\n");col_num += yyleng;} 
+":"  {printf("COLON\n");col_num += yyleng;}
+","  {printf("COMMA\n");col_num += yyleng;} 
+"("  {printf("L_PAREN\n");col_num += yyleng;} 
+")"  {printf("R_PAREN\n");col_num += yyleng;} 
+"["  {printf("L_SQUARE_BRACKET\n");col_num += yyleng;} 
+"]"  {printf("R_SQUARE_BRACKET\n");col_num += yyleng;} 
+":=" {printf("ASSIGN\n");col_num += yyleng;}
+(##(.)*\n) {line_num++, col_num=1;}
 
 
 [ \t]+ {/* space  */}
 
-"\n" {line_num++, space_num=1;}
+"\n" {line_num++, col_num=1;}
 
 
-. {printf("Error at Line %d column %d :\"%s\"\n", line_num, space_num, yytext);exit(0);}
+. {printf("Error at Line %d column %d :\"%s\"\n", line_num, col_num, yytext);exit(0);}
 
 %%
 
