@@ -45,10 +45,16 @@ DIGIT [0-9]
 ">"  {printf("GT\n");col_num += yyleng;}
 "<=" {printf("LTE\n");col_num += yyleng;}
 ">=" {printf("GTE\n");col_num += yyleng;}
-{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);col_num += yyleng;}
 
-{DIGIT}+{LETTER}+({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)*(_)*  	{printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", line_num, col_num, yytext); exit(0);}
-{LETTER}({LETTER}|{DIGIT})*(_({LETTER}|{DIGIT})+)*(_)+ 	{printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", line_num, col_num, yytext); exit(0);}
+
+{LETTER}({LETTER}|{DIGIT})*((_)+({LETTER}|{DIGIT})+)* 	{printf("IDENT %s\n", yytext);col_num += yyleng;}
+
+
+({DIGIT}|_)+{LETTER}({LETTER}|{DIGIT})*((_)+({LETTER}|{DIGIT})+)*(_)*  	{printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n", line_num, col_num, yytext); exit(0);}
+
+{LETTER}({LETTER}|{DIGIT})*((_)+({LETTER}|{DIGIT})+)*(_)+ 	{printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n", line_num, col_num, yytext); exit(0);}
+
+
 
 {DIGIT}+   {printf("NUMBER %s\n",yytext);col_num += yyleng;}
 ";"  {printf("SEMICOLON\n");col_num += yyleng;} 
@@ -60,7 +66,6 @@ DIGIT [0-9]
 "]"  {printf("R_SQUARE_BRACKET\n");col_num += yyleng;} 
 ":=" {printf("ASSIGN\n");col_num += yyleng;}
 (##(.)*\n) {line_num++, col_num=1;}
-
 
 [ \t]+ {/* ignore space or tab  */col_num += yyleng;}
 
